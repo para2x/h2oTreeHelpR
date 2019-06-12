@@ -427,16 +427,17 @@ h2o_tree_convertR_with_h2o <- function(h2o_model, get_internal_predictions) {
     
   }
   
-  h2o_trees <- lapply(1:n_trees,
+  
+   h2o_trees <-furrr::future_map(1:n_trees,
                       function(x) h2o.getModelTree(h2o_model, x))
   
   #----------------------------------------------------------------------------#
   # Section 2. Extract info into particular format ----
   #----------------------------------------------------------------------------#
   
-  h2o_tree_info <- lapply(X = h2o_trees, 
-                          FUN = extract_H2OTree_info, 
-                          get_internal_predictions = get_internal_predictions)
+   h2o_tree_info <- furrr::future_map(h2o_trees,
+                                      ~ extract_H2OTree_info(.x, get_internal_predictions))
+
   
   #----------------------------------------------------------------------------#
   # Section 3. Return tree structures ----
