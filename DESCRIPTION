@@ -7,7 +7,6 @@ Maintainer: Richard Angell <richardangell37@gmail.com>
 Description: Interesting things to do with trees in h2o from R.
 Depends:furrr
 License: What license is it under?
-Depends: h2o
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
