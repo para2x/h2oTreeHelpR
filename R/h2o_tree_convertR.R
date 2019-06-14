@@ -68,7 +68,8 @@ h2o_tree_convertR <- function(h2o_model,
                               via_mojo = FALSE,
                               output_subdir = getwd(),
                               get_internal_predictions = FALSE,
-                              delete_intermediate_files = TRUE) {
+                              delete_intermediate_files = TRUE,
+                              tree=1) {
   
   #----------------------------------------------------------------------------#
   # Function Layout: ----
@@ -107,7 +108,7 @@ h2o_tree_convertR <- function(h2o_model,
     
   } else {
     
-    tree_dfs <- h2o_tree_convertR_with_h2o(h2o_model, get_internal_predictions)
+    tree_dfs <- h2o_tree_convertR_with_h2o(h2o_model, get_internal_predictions, tree)
     
   }
   
@@ -377,7 +378,7 @@ h2o_tree_convertR_via_mojo <- function(h2o_model,
 #' h2o_trees <- h2o_tree_convertR_with_h2o(h2o_model = prostate.gbm)
 #'
 #' @export
-h2o_tree_convertR_with_h2o <- function(h2o_model, get_internal_predictions) {
+h2o_tree_convertR_with_h2o <- function(h2o_model, get_internal_predictions, tree.sel=1) {
   
   #----------------------------------------------------------------------------#
   # Function Layout: ----
@@ -428,7 +429,7 @@ h2o_tree_convertR_with_h2o <- function(h2o_model, get_internal_predictions) {
   }
   
   
-   h2o_trees <-furrr::future_map(1:n_trees,
+   h2o_trees <-furrr::future_map(seq_len(tree.sel),
                       function(x) h2o.getModelTree(h2o_model, x))
   
   #----------------------------------------------------------------------------#
